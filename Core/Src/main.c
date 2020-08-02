@@ -27,8 +27,6 @@
 #include "../Libs/dma_uasrt/dma_usart.h"
 #include "../Libs/step_motor/step_motor.h"
 #include "../Libs/echo_radar/echo_radar.h"
-//#include "../Libs/ssd1306/ssd1306.h"
-//#include "../Libs/dwt_delay/dwt_delay.h"
 #include "../Libs/hcsr04_IC/hcsr04.h"
 /* USER CODE END Includes */
 
@@ -79,8 +77,6 @@ void InitDevices(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint16_t val;
-uint16_t timer;
 
 /* USER CODE END 0 */
 
@@ -91,7 +87,7 @@ uint16_t timer;
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	timer = 0;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -134,30 +130,15 @@ int main(void)
   HCSR04_Init(&hcsr);
   StepMotorInit(&motor);
   EchoRadar_Init();
-  uint32_t counter1 = 0;
   //==================================================================================WHILE========
   while (1)
   {
-  	//HCSR04_ReadDistance(&hcsr);
   	EchoRadar_Precessing();
-  	/*if(motor.position > 1050) {
-  			motor.direction = 0;
-  		} else if(motor.position < -1050) {
-  			motor.direction = 1;
-  		}*/
-  	//StepMotorRotate(&motor);
-  	val = EncoderGetTublerState(&encoder);
-  	//val = EncoderGetButtonState(&encoder);
-  	/*if(counter1%10 == 0) {
-  		DMA_USART_Printf("{TEST1=%d}{TEST2=%d}{%d}\r\n", motor.direction,
-  				val, motor.position);
-  		//HAL_Delay(val*10);
-  	}*/
+
   	EchoRadar_SendMessage();
 
-  	counter1++;
-  	//StepMotorRotate(&motor);
   	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+
   	HAL_Delay(10);
     /* USER CODE END WHILE */
 

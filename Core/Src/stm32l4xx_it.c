@@ -65,9 +65,7 @@ extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim6;
 extern DMA_HandleTypeDef hdma_usart2_tx;
 /* USER CODE BEGIN EV */
-extern uint16_t timer;
 extern Encoder_HandleTypeDef encoder;
-extern StepMotor_HandleTypeDef motor;
 
 /* USER CODE END EV */
 
@@ -282,7 +280,6 @@ void EXTI15_10_IRQHandler(void)
 void TIM6_DAC_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
-	//StepMotorRotate(&motor);
 	EchoRadar_MotorTimerHandler();
   /* USER CODE END TIM6_DAC_IRQn 0 */
   HAL_TIM_IRQHandler(&htim6);
