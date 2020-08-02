@@ -554,7 +554,6 @@ void InitDevices(void) {
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 	HCSR04_CaptureCallback(htim, &hcsr, EchoRadar_EnableMotor);
-	//EchoRadar_CaptureCallbackHandler(htim);
 }
 /* USER CODE END 4 */
 

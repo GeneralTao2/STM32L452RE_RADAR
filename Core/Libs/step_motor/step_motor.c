@@ -10,7 +10,6 @@ void StepMotorInit(StepMotor_HandleTypeDef *motor) {
 	motor->direction = 1;
 	motor->phase = 1;
 	motor->position = 0;
-	motor->counter = 0;
 }
 
 /* Sets the state of the step motor by ruling on 4 сoils */
@@ -31,11 +30,9 @@ void StepMotorWrite(StepMotor_HandleTypeDef *motor, GPIO_PinState ps1,
  * 4: 0 0 0 1
  */
 void StepMotorRotate(StepMotor_HandleTypeDef *motor) {
-	motor->states[motor->counter] = motor->direction;
 	if(motor->position == -1000) {
 		motor->position = motor->position;
 	}
-	motor->counter++;
 	switch(motor->phase) {
 	case 1:
 		StepMotorWrite(motor, 1, 0, 0, 0);

@@ -31,11 +31,8 @@ typedef struct StepMotor_HandleTypeDef {
 	/* Counter for creating of delay */
 	uint32_t progTime;
 
+	/* Current position (in passes) */
 	int16_t position;
-
-	uint8_t states[4000];
-
-	uint16_t counter;
 } StepMotor_HandleTypeDef;
 
 void StepMotorInit(StepMotor_HandleTypeDef *motor);

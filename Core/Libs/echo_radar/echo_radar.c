@@ -14,57 +14,7 @@ void EchoRadar_UpdateViewing(void) {
 	echoRadar.mapLength = ECHO_MOTOR_VIEWING_ANGLE * 2 / echoRadar.stepAngle;
 }
 
-/* Sends message, that contain real-time map and its id via USART */
-void EchoRadar_SendMessage(void) {
-	char localBufer[32];
-	strcpy((char*)DMA_USART_GetBuffer(), "{array=");
-	if(motor.direction != echoRadar.lastDirection) {
-		for(uint16_t i=0; i<echoRadar.mapLength; i++) {
-			sprintf(localBufer, "%d ", echoRadar.map[i]);
-			strcat((char*)DMA_USART_GetBuffer(), localBufer);
-		}
-		sprintf(localBufer, "}{id=%d}", echoRadar.messageCounter);
-		strcat((char*)DMA_USART_GetBuffer(), localBufer);
-		DMA_USART_Print();
-		echoRadar.messageCounter++;
-	}
-	echoRadar.lastDirection = motor.direction;
-}
-
-/* Initialize global variables of this system */
-void EchoRadar_Init(void) {
-	EchoRadar_UpdateViewing();
-	motor.position = -ECHO_MOTOR_VIEWING_ANGLE + 1;
-	echoRadar.counter = 0;
-	echoRadar.HCSR_State = 1;
-	echoRadar.mapIndex = 0;
-	echoRadar.standardMapReadingFlag = 1;
-	echoRadar.messageCounter = 0;
-	echoRadar.lastDirection = motor.direction;
-}
-
-/* Performs motor rotation and echo scanning */
-void EchoRadar_Precessing(void) {
-	if(EncoderGetButtonState(&encoder)) {
-		EchoRadar_UpdateViewing();
-		if(echoRadar.HCSR_State) {
-			HCSR04_ReadDistance(&hcsr);
-		}
-	} else {
-		StepMotorWrite(&motor, 0, 0, 0, 0);
-	}
-}
-
-/* Callback for echo sensor processing.
- * Executed upon completion of echo scanning.
- */
-void EchoRadar_CaptureCallbackHandler(TIM_HandleTypeDef *htim) {
-	if(htim == hcsr.htim) {
-		EchoRadar_EnableMotor();
-	}
-}
-
-/* Determines motion */
+/* Determines motion via comparing values in run-time map and standard map */
 void EchoRadar_Compare(void) {
 	if(echoRadar.mapIndex > 2 && echoRadar.mapIndex < ECHO_MOTOR_VIEWING_ANGLE*2 - 4) {
 		uint8_t localErrorStrength = 0;
@@ -104,7 +54,7 @@ void EchoRadar_EnableMotor(void) {
 		echoRadar.mapIndex--;
 		if(motor.position - echoRadar.stepAngle <= -ECHO_MOTOR_VIEWING_ANGLE) {
 			echoRadar.standardMapReadingFlag = 0;
-				motor.direction = 1;
+		  motor.direction = 1;
 		}
 	}
 	echoRadar.HCSR_State = 0;
@@ -128,4 +78,47 @@ void EchoRadar_MotorTimerHandler(void) {
 		StepMotorRotate(&motor);
 		echoRadar.counter++;
 	}
+}
+
+/* Initialize global variables of this system */
+void EchoRadar_Init(void) {
+	EchoRadar_UpdateViewing();
+	motor.position = -ECHO_MOTOR_VIEWING_ANGLE + 1;
+	echoRadar.counter = 0;
+	echoRadar.HCSR_State = 1;
+	echoRadar.mapIndex = 0;
+	echoRadar.standardMapReadingFlag = 1;
+	echoRadar.messageCounter = 0;
+	echoRadar.lastDirection = motor.direction;
+}
+
+/* Performs motor rotation and echo scanning */
+void EchoRadar_Precessing(void) {
+	if(EncoderGetButtonState(&encoder)) {
+		/*EchoRadar_UpdateViewing();*/
+		if(echoRadar.HCSR_State) {
+			HCSR04_ReadDistance(&hcsr);
+		}
+	} else {
+		StepMotorWrite(&motor, 0, 0, 0, 0);
+	}
+}
+
+/* Sends message, that contain real-time map and its id via USART
+ * Model: {array=<text>}{id=<text>}
+ */
+void EchoRadar_SendMessage(void) {
+	char localBufer[32];
+	strcpy((char*)DMA_USART_GetBuffer(), "{array=");
+	if(motor.direction != echoRadar.lastDirection) {
+		for(uint16_t i=0; i<echoRadar.mapLength; i++) {
+			sprintf(localBufer, "%d ", echoRadar.map[i]);
+			strcat((char*)DMA_USART_GetBuffer(), localBufer);
+		}
+		sprintf(localBufer, "}{id=%d}", echoRadar.messageCounter);
+		strcat((char*)DMA_USART_GetBuffer(), localBufer);
+		DMA_USART_Print();
+		echoRadar.messageCounter++;
+	}
+	echoRadar.lastDirection = motor.direction;
 }

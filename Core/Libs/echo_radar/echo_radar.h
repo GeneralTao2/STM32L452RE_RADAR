@@ -70,11 +70,9 @@ void EchoRadar_Precessing(void);
 
 void EchoRadar_SendMessage(void);
 
-void EchoRadar_CaptureCallbackHandler(TIM_HandleTypeDef *htim);
+void EchoRadar_UpdateViewing(void);
 
 void EchoRadar_EnableMotor(void);
-
-void EchoRadar_DisableMotor(void);
 
 void EchoRadar_MotorTimerHandler(void);
 
