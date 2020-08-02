@@ -1,0 +1,9 @@
+echo_radar.c:12:6:EchoRadar_UpdateViewing	4	static
+echo_radar.c:18:6:EchoRadar_SendMessage	48	static
+echo_radar.c:35:6:EchoRadar_Init	8	static
+echo_radar.c:47:6:EchoRadar_Precessing	16	static
+echo_radar.c:61:6:EchoRadar_CaptureCallbackHandler	16	static
+echo_radar.c:68:6:EchoRadar_Compare	16	static
+echo_radar.c:89:6:EchoRadar_EnableMotor	8	static
+echo_radar.c:114:6:EchoRadar_DisableMotor	8	static
+echo_radar.c:123:6:EchoRadar_MotorTimerHandler	8	static

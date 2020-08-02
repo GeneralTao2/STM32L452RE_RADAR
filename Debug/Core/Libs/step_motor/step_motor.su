@@ -1,0 +1,3 @@
+step_motor.c:9:6:StepMotorInit	16	static
+step_motor.c:17:6:StepMotorWrite	16	static
+step_motor.c:33:6:StepMotorRotate	24	static

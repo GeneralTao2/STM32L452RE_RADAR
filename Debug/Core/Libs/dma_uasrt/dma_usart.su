@@ -1,0 +1,5 @@
+dma_usart.c:10:6:DMA_USART_Printf	16	static
+dma_usart.c:21:6:DMA_USART_Print	16	static
+dma_usart.c:31:6:DMA_USART_Init	8	static
+dma_usart.c:36:6:DMATransferComplete	16	static
+dma_usart.c:40:10:DMA_USART_GetBuffer	4	static

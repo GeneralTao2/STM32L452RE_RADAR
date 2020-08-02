@@ -1,0 +1,9 @@
+encoder.c:12:6:EncoderInit	16	static
+encoder.c:35:6:EncoderTumblerExternInterrupt	24	static
+encoder.c:52:6:EncoderTumblerTimerInterrupt	24	static
+encoder.c:79:6:EncoderButtonExternInterrupt	16	static
+encoder.c:89:9:EncoderGetTublerState	16	static
+encoder.c:94:9:EncoderGetButtonState	16	static
+encoder.c:99:6:EncoderTougleButton	16	static
+encoder.c:104:6:EncoderTomblerInc	16	static
+encoder.c:111:6:EncoderTomblerDec	16	static
