@@ -1,4 +1,0 @@
-hcsr04.c:10:10:HCSR04_GetDistance	16	static
-hcsr04.c:15:6:HCSR04_Init	16	static
-hcsr04.c:22:6:HCSR04_ReadDistance	16	static
-hcsr04.c:31:6:HCSR04_CaptureCallback	40	static
