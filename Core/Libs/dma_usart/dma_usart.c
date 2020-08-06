@@ -4,7 +4,7 @@
  *  Created on: Jul 13, 2020
  *      Author: ar725
  */
-#include "dma_usart.h"
+#include "../dma_usart/dma_usart.h"
 
 /* Printing text in printf style */
 void DMA_USART_Printf(const char * format, ... ) {

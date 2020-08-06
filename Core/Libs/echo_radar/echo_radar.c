@@ -8,9 +8,8 @@
 #include "echo_radar.h"
 
 /* Updates stepAngle and mapLength relative to current coverage spectrum */
-/* !!! Not implemented !!! */
 void EchoRadar_UpdateViewing(void) {
-	echoRadar.stepAngle = /*EncoderGetTublerState(&encoder)*10*/10;
+	echoRadar.stepAngle = EncoderGetTublerState(&encoder) * ECHO_MOTOR_STPES_IN_ONE_DEGREE;
 	echoRadar.mapLength = ECHO_MOTOR_VIEWING_ANGLE * 2 / echoRadar.stepAngle;
 }
 
@@ -90,12 +89,31 @@ void EchoRadar_Init(void) {
 	echoRadar.standardMapReadingFlag = 1;
 	echoRadar.messageCounter = 0;
 	echoRadar.lastDirection = motor.direction;
+	echoRadar.buttonNotPressed = 1;
+	echoRadar.lastButtonState = EncoderGetButtonState(&encoder);
 }
 
-/* Performs motor rotation and echo scanning */
-void EchoRadar_Precessing(void) {
-	if(EncoderGetButtonState(&encoder)) {
-		/*EchoRadar_UpdateViewing();*/
+/* Processes interface working
+ * Performs motor rotation and echo scanning
+ */
+void EchoRadar_Processing(void) {
+	uint8_t currentButtonState = EncoderGetButtonState(&encoder);
+
+	/* Interface processing */
+	if(echoRadar.buttonNotPressed) {
+		OledMenu_PrintEchoRadarInfo(0, EncoderGetTublerState(&encoder));
+	}
+	if(echoRadar.buttonNotPressed && currentButtonState != echoRadar.lastButtonState) {
+		OledMenu_PrintEchoRadarInfo(currentButtonState, EncoderGetTublerState(&encoder));
+	}
+	echoRadar.lastButtonState = currentButtonState;
+
+	/* Motor rotation and echo scanning performing */
+	if(currentButtonState) {
+    if(echoRadar.buttonNotPressed) {
+    	EchoRadar_UpdateViewing();
+    }
+    echoRadar.buttonNotPressed = 0;
 		if(echoRadar.HCSR_State) {
 			HCSR04_ReadDistance(&hcsr);
 		}

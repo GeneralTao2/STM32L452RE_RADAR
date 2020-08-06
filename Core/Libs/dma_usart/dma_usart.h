@@ -5,8 +5,8 @@
  *      Author: ar725
  */
 
-#ifndef LIBS_DMA_UASRT_DMA_USART_H_
-#define LIBS_DMA_UASRT_DMA_USART_H_
+#ifndef LIBS_DMA_USART_DMA_USART_H_
+#define LIBS_DMA_USART_DMA_USART_H_
 
 #include "../tools/tools.h"
 #include <stdio.h>
@@ -38,4 +38,4 @@ void DMATransferComplete(DMA_HandleTypeDef *hdma);
 
 uint8_t* DMA_USART_GetBuffer();
 
-#endif /* LIBS_DMA_UASRT_DMA_USART_H_ */
+#endif /* LIBS_DMA_USART_DMA_USART_H_ */

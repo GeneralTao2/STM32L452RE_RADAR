@@ -37,7 +37,7 @@
 #include "../tools/tools.h"
 
 #define ENCODER_BUTTON_PROGTIME_DELAY 1000
-#define ENCODER_MAX_VAL 1000
+#define ENCODER_MAX_VAL 15
 #define ENCODER_MIN_VAL 1
 typedef struct Encoder_HandleTypeDef {
 	/*! CLK pin configs, if using EXT */

@@ -10,13 +10,20 @@
 
 /* Including needed libs */
 #include "../Libs/encoder/encoder.h"
-#include "../Libs/dma_uasrt/dma_usart.h"
 #include "../Libs/step_motor/step_motor.h"
 #include "../Libs/hcsr04_IC/hcsr04.h"
 #include <stdlib.h>
+#include "../dma_usart/dma_usart.h"
+#include "../oled_menu/oled_menu.h"
 
 /* Stepper motor coverage spectrum in motor steps */
 #define ECHO_MOTOR_VIEWING_ANGLE 525
+
+/* Stepper motor step quantity in one degree */
+#define ECHO_MOTOR_STPES_IN_ONE_DEGREE 5.833333333
+
+/* Maximum difference between standard and run-time distance */
+#define ECHO_MOTOR_MAX_DIFF 10
 
 /* Including already created and initialized structs from main.c */
 extern HCSR04_HandleTypeDef hcsr;
@@ -62,11 +69,20 @@ static struct EchoRadar {
 
 	/* Stepper motor direction in previous step */
   uint8_t lastDirection;
+
+  /* Flag, that is
+   *  1, if button never pressed
+   *  0, if button pressed at least once
+   */
+  uint8_t buttonNotPressed;
+
+  /* Button state in previous loop execution */
+  uint8_t lastButtonState;
 } echoRadar;
 
 void EchoRadar_Init(void);
 
-void EchoRadar_Precessing(void);
+void EchoRadar_Processing(void);
 
 void EchoRadar_SendMessage(void);
 

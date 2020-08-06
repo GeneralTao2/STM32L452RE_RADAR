@@ -21,13 +21,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include "../Libs/dma_usart/dma_usart.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "../Libs/encoder/encoder.h"
-#include "../Libs/dma_uasrt/dma_usart.h"
 #include "../Libs/step_motor/step_motor.h"
 #include "../Libs/echo_radar/echo_radar.h"
 #include "../Libs/hcsr04_IC/hcsr04.h"
+#include "../Libs/oled_menu/oled_menu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -123,17 +124,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   DMA_USART_Init();
   EncoderInit(&encoder);
+  HCSR04_Init(&hcsr);
+  StepMotorInit(&motor);
+  EchoRadar_Init();
+  OledMenu_Init();
+
   HAL_TIM_Base_Start(&htim2);
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start(&htim6);
   HAL_TIM_Base_Start_IT(&htim6);
-  HCSR04_Init(&hcsr);
-  StepMotorInit(&motor);
-  EchoRadar_Init();
   //==================================================================================WHILE========
   while (1)
   {
-  	EchoRadar_Precessing();
+  	EchoRadar_Processing();
 
   	EchoRadar_SendMessage();
 
@@ -549,7 +552,6 @@ void InitDevices(void) {
 	motor.p3.PIN = GPIO_PIN_9;
 	motor.p4.GPIO = GPIOB;
 	motor.p4.PIN = GPIO_PIN_8;
-
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
